@@ -30,12 +30,12 @@ export type Track = {
 export async function getLastSong(username: string, apikey: string): Promise<Track> {
     const url = `http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${username}&api_key=${apikey}&format=json&limit=1`
 
-    return await cached<Track>("lastfm.getLastSong", async () => {
-        const response = await fetch(url);
-        const json = await response.json();
+    // return await cached<Track>("lastfm.getLastSong", async () => {
+    const response = await fetch(url);
+    const json = await response.json();
 
-        return json.recenttracks.track[0];
-    }, {
-        expiry: {minute: 1}
-    })
+    return json.recenttracks.track[0];
+    // }, {
+    //     expiry: {minute: 1}
+    // })
 }
