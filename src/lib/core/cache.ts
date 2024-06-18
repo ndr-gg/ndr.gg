@@ -1,4 +1,4 @@
-import fs from "node:fs"
+// // import fs from "node:fs"
 import {DateTime, Duration} from "luxon"
 
 const CacheRoot = ".cache" as const;
@@ -33,7 +33,7 @@ function getCachePath(key: string) {
 
 async function createCacheItem<TData>(key: string, factory: () => Promise<TData>, cfg: CacheEntryConfig) {
     console.log(`Cache miss for ${key}`)
-    if (fs.existsSync(getCachePath(key))) fs.rmSync(getCachePath(key))
+    // if (fs.existsSync(getCachePath(key))) fs.rmSync(getCachePath(key))
 
     const data = await factory();
 
@@ -52,7 +52,7 @@ async function createCacheItem<TData>(key: string, factory: () => Promise<TData>
         data
     } as const satisfies CacheEntry<TData>;
 
-    fs.writeFileSync(getCachePath(key), JSON.stringify(entry));
+    // fs.writeFileSync(getCachePath(key), JSON.stringify(entry));
 
     return data;
 }
@@ -67,15 +67,15 @@ function validateEntry<TData>(key: string, entry: CacheEntry<TData>) {
 }
 
 export async function cached<TData>(key: string, factory: () => Promise<TData>, cfg: CacheEntryConfig = {expiry: {minute: 1}}) {
-    if (!fs.existsSync(CacheRoot)) fs.mkdirSync(CacheRoot);
-    if (!fs.existsSync(getCachePath(key))) return await createCacheItem(key, factory, cfg);
-    try {
-
-        const entry: CacheEntry<TData> = JSON.parse(fs.readFileSync(getCachePath(key)).toString());
-        if (!validateEntry(key, entry)) return await createCacheItem(key, factory, cfg);
-
-        return entry.data
-    } catch (e) {
-        return await createCacheItem(key, factory, cfg);
-    }
+    // if (!fs.existsSync(CacheRoot)) fs.mkdirSync(CacheRoot);
+    // if (!fs.existsSync(getCachePath(key))) return await createCacheItem(key, factory, cfg);
+    // try {
+    //
+    //     // const entry: CacheEntry<TData> = JSON.parse(fs.readFileSync(getCachePath(key)).toString());
+    //     if (!validateEntry(key, entry)) return await createCacheItem(key, factory, cfg);
+    //
+    //     return entry.data
+    // } catch (e) {
+    //     return await createCacheItem(key, factory, cfg);
+    // }
 }
