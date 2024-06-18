@@ -1,6 +1,5 @@
 import fs from "node:fs"
 import {DateTime, Duration} from "luxon"
-import type {DurationLike} from "luxon";
 
 const CacheRoot = ".cache" as const;
 
@@ -21,10 +20,10 @@ type CacheEntry<TData> = {
 }
 
 export type CacheEntryConfig = {
-    expiry: DurationLike;
+    expiry: any;
 }
 
-function parseExpiry(expiry: DurationLike): number {
+function parseExpiry(expiry: any): number {
     return Duration.fromDurationLike(expiry).as('seconds')
 }
 

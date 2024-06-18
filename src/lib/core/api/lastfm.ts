@@ -1,4 +1,3 @@
-import EleventyFetch from "@11ty/eleventy-fetch";
 import {cached} from "../cache.ts";
 
 export type LastFMBooleanNumber = 0 | 1;
