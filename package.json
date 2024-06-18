@@ -12,6 +12,7 @@
   "dependencies": {
     "@11ty/eleventy-fetch": "^4.0.1",
     "@astrojs/check": "^0.7.0",
+    "@astrojs/cloudflare": "^10.4.1",
     "@astrojs/react": "^3.6.0",
     "@astrojs/tailwind": "^5.1.0",
     "@t3-oss/env-core": "^0.10.1",
