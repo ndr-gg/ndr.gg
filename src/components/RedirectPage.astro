@@ -1,0 +1,33 @@
+---
+import RedirectPageInner from "./client/RedirectPage";
+import Layout from "../layouts/Layout.astro";
+import Section from "./Section.astro";
+import Title from "./Title.astro";
+export interface Props {
+    url: string;
+    label?: string;
+}
+
+const {url, label} = Astro.props;
+
+const purl = new URL(url);
+
+const foreignSiteSlug = purl.host.startsWith('www.') ? purl.host.split("www.")[1] : purl;
+
+const defaultSeconds = 5;
+---
+
+
+<Layout title="leaving">
+
+    <Section class="flex flex-col items-center w-full">
+        <RedirectPageInner
+                client:only="react"
+                defaultSeconds={defaultSeconds}
+                url={url}
+                label={label ?? foreignSiteSlug}
+        />
+    </Section>
+
+</Layout>
+

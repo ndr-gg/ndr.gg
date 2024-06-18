@@ -1,0 +1,53 @@
+---
+import {Image} from 'astro:assets';
+import logo from "../asssets/logo.webp";
+import Section from "./Section.astro";
+---
+
+<script>
+    const button = document.querySelector('button#logo-button');
+    const logoShadow = document.querySelector('img#logo-shadow');
+
+    let timeout;
+
+    button.addEventListener('click', () => {
+        if (timeout) clearTimeout(timeout);
+        navigator.clipboard.writeText(window.location.href)
+        logoShadow.classList.add('animate-ping-once');
+        timeout = setTimeout(() => logoShadow.classList.remove('animate-ping-once'), 1000);
+        window.location.href = '/'
+    });
+</script>
+
+<Section class="flex items-center justify-between">
+    <button class="relative group hover:brightness-125 transition-all" title="Copy Link" id="logo-button">
+        <Image
+                loading="eager"
+                src={logo}
+                alt=""
+                width="160px"
+                height="160px"
+                class="size-16 pointer-events-none"
+        />
+        <Image
+                id="logo-shadow"
+                loading="eager"
+                src={logo}
+                alt=""
+                width="160px"
+                height="160px"
+                class="size-16 blur transition-all group-hover:blur-md pointer-events-none absolute top-0"
+        />
+    </button>
+    <ul id="links" class="flex flex-col items-end">
+        <li>
+            <a href="https://github.com/ndr-gg">Github</a>
+        </li>
+        <li>
+            <a href="https://twitter.com/ndr_gg">Twitter</a>
+        </li>
+        <li>
+            <a href="#" class="not-sr-only">Discord</a>
+        </li>
+    </ul>
+</Section>

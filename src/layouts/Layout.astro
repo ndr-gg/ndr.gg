@@ -1,0 +1,27 @@
+---
+import "../styles/global.scss"
+import Header from "../components/Header.astro";
+
+interface Props {
+    title: string;
+}
+
+const {title} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="description" content="Astro description"/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="icon" type="image/svg+xml" href="/icon.webp"/>
+    <meta name="generator" content={Astro.generator}/>
+    <title>{title} ツ - ndr.gg</title>
+</head>
+<body class="max-w-5xl mx-auto flex flex-col gap-4 p-4">
+<Header/>
+<slot/>
+<!--TODO: Footer-->
+</body>
+</html>

@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+
+html {
+  background: black;
+  --accent-light: #4effff;
+  --accent-dark: #4e00ff,
+}
+
+* {
+  color: white;
+  font-family: Nunito, sans-serif;
+}
+
+a:not(:has(> div)), .link {
+  transition: color;
+  transition-duration: 0.2s;
+
+  color: #4effff;
+  font-weight: 600;
+  letter-spacing: 0.25ch;
+
+  &:hover {
+    color: #4e00ff;
+  }
+}
+

@@ -1,0 +1,42 @@
+---
+export interface Props {
+    separator?: string
+}
+
+const {separator} = Astro.props;
+---
+
+<div role="marquee" class="motion-reduce:block none">
+    <div class="flex-shrink flex justify-around whitespace-nowrap w-full gap-[--marquee-gap]">
+        <slot/>
+    </div>
+</div>
+<div role='marquee' class="motion-reduce:none animate-marquee flex select-none w-min">
+    <div class="flex-shrink flex justify-around whitespace-nowrap w-full gap-[--marquee-gap]">
+        <slot/>
+    </div>
+    {separator !== undefined
+        ? <span class="text-neutral-700 mx-4">{separator}</span>
+        : null}
+    <div class="flex-shrink flex justify-around whitespace-nowrap w-full gap-[--marquee-gap]" aria-hidden="true">
+        <slot/>
+    </div>
+    {separator !== undefined
+        ? <span class="text-neutral-700 mx-4">{separator}</span>
+        : null}
+    <div class="flex-shrink flex justify-around whitespace-nowrap w-full gap-[--marquee-gap]" aria-hidden="true">
+        <slot/>
+    </div>
+    {separator !== undefined
+        ? <span class="text-neutral-700 mx-4">{separator}</span>
+        : null}
+    <div class="flex-shrink flex justify-around whitespace-nowrap w-full gap-[--marquee-gap]" aria-hidden="true">
+        <slot/>
+    </div>
+</div>
+
+<style>
+    div[role="marquee"] {
+        gap: calc(2 * var(--marquee-gap))
+    }
+</style>

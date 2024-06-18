@@ -1,0 +1,58 @@
+---
+import {Image} from 'astro:assets';
+import {DateTime, Duration} from "luxon";
+import getLastSong, {isLastSong} from "../lib/lastfm";
+import {toAbsHumanDuration} from "../lib/core/duration-format";
+import Marquee from "./Marquee.astro";
+import Section from "./Section.astro";
+
+const lastSong = await getLastSong();
+---
+
+<Section>
+
+    <a href='/last' class="block w-full">
+        <div class="w-full flex gap-4">
+            <Image alt={lastSong.trackName}
+                   src={lastSong.largestImage}
+                   width="64px"
+                   height="64px"
+                   loading="eager"
+                   class="size-16 rounded-full animate-vinyl pointer-events-none"
+            />
+            <div class="flex flex-col gap-2">
+
+                {lastSong.isCurrentlyPlaying ?
+                        <span class="flex items-center gap-2">
+                        <span id="status-marker-currrent" role="status"
+                              class="size-2 bg-green-500 rounded-full inline-block"/>
+                        <span class="leading-none">Currently Playing:</span>
+                    </span>
+                    :
+                        <span class="flex items-center gap-2">
+                        <span id="status-marker-historical" role="status"
+                              class="size-2 bg-neutral-500 rounded-full inline-block"/>
+                        <span class="leading-none">Last Played:</span>
+                    </span>
+                }
+                <div class="w-96 md:w-64 flex items-center justify-center flex-1 overflow-hidden" id="marquee-container">
+                    <Marquee separator="|">
+                        <span>{lastSong.trackName}</span>
+                        -
+                        <span>{lastSong.artistName}</span>
+                        -
+                        <span>{lastSong.albumName}</span>
+                    </Marquee>
+                </div>
+            </div>
+        </div>
+        {isLastSong(lastSong) &&
+                <span>{toAbsHumanDuration(DateTime.fromSeconds(lastSong.playedAt), DateTime.now().toUTC())}</span>}
+    </a>
+</Section>
+
+<style>
+    #marquee-container {
+        --marquee-gap: .25rem;
+    }
+</style>
