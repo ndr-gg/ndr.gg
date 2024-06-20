@@ -12,7 +12,7 @@ html {
   font-family: Nunito, sans-serif;
 }
 
-a:not(:has(> div)), .link {
+a:not(:has(> div)), .link, .link>* {
   transition: color;
   transition-duration: 0.2s;
 
@@ -23,5 +23,6 @@ a:not(:has(> div)), .link {
   &:hover {
     color: #4e00ff;
   }
+
 }
 

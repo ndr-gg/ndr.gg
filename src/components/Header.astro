@@ -2,6 +2,9 @@
 import {Image} from 'astro:assets';
 import logo from "../asssets/logo.webp";
 import Section from "./Section.astro";
+import SneakyLink from "./client/SneakyLink";
+
+const discordUrl = btoa(btoa(btoa("https://discord.com/users/148631352068145152")));
 ---
 
 <script>
@@ -47,7 +50,7 @@ import Section from "./Section.astro";
             <a href="https://twitter.com/ndr_gg">Twitter</a>
         </li>
         <li>
-            <a href="#" class="not-sr-only">Discord</a>
+            <SneakyLink client:only="react" url={discordUrl} className="not-sr-only">Discord</SneakyLink>
         </li>
     </ul>
 </Section>
