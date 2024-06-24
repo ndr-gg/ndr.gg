@@ -2,12 +2,12 @@ import {Duration} from "luxon";
 
 export const toAbsHumanDuration = (start: any, end: any): string => {
     // Better Duration.toHuman support https://github.com/moment/luxon/issues/1134
-    const duration = end.diff(start).shiftTo('days', 'hours', 'minutes', 'seconds').toObject();
+    const duration = end.diff(start).shiftTo('days', 'hours', 'minutes').toObject();
     const prefix = start > end ? 'in ' : '';
     const suffix = end > start ? ' ago' : '';
 
-    if ('seconds' in duration) {
-        duration.seconds = Math.round(duration.seconds!);
+    if ('minutes' in duration) {
+        duration.minutes = Math.round(duration.minutes!);
     }
 
     const cleanedDuration = Object.fromEntries(

@@ -1,0 +1,104 @@
+---
+import {Image} from 'astro:assets';
+import {DateTime, Duration} from "luxon";
+import getSteamPlayerInformation from "../lib/steam";
+import {toAbsHumanDuration} from "../lib/core/duration-format";
+import Section from "./Section.astro";
+import env from "../env";
+
+const info = await getSteamPlayerInformation(env.server.apikey.steam, env.server.id.steam);
+---
+
+<Section class="flex gap-4 flex-col">
+    <a href="/steam" id="persona" class="flex items-center gap-4">
+        <Image alt={info.persona.name}
+               src={info.persona.avatarFull}
+               width={184}
+               height={184}
+               loading="eager"
+               class="size-16 rounded-full pointer-events-none"
+        />
+        <div class="flex flex-col">
+        <span class="flex items-center gap-2">
+          {info.persona.name}
+            <i
+                    data-status={info.persona.state}
+                    title={info.persona.state}
+                    class={
+                      `size-2 rounded-full relative inline-block after:absolute ` +
+                      `data-[status="Online"]:bg-green-500 ` +
+                      `data-[status="Busy"]:bg-red-500 ` +
+                      `data-[status="Away"]:bg-yellow-500 ` +
+                      `data-[status="Snooze"]:bg-blue-500 data-[status="Snooze"]:after:content-['💤'] data-[status="Snooze"]:after:-right-4 data-[status="Snooze"]:after:-top-4 data-[status="Snooze"]:after:text-xs`
+                    }
+            ></i>
+        </span>
+          {info.persona.state !== 'Online'
+            ? <span>
+              Last online
+              {toAbsHumanDuration(DateTime.fromJSDate(info.persona.lastOnline), DateTime.now().toUTC())}
+            </span>
+            : null}
+        </div>
+    </a>
+  {info.isInGame
+    ?
+          <div id="currently">
+              <div class="relative transition-all w-[344px] h-[160px] group">
+                  <Image
+                          width={460}
+                          height={215}
+                          alt={info.activeGame.game.name}
+                          src={info.activeGame.detail.header_image}
+                          loading="eager"
+                          class="absolute top-0 left-0 -z-10 brightness-50 transition-all rounded-md "
+                  ></Image>
+                  <span class="absolute top-4 right-4 flex items-center gap-2">
+                      <span>In Game</span>
+                      <span class="inline-block relative size-2">
+
+                        <i class="size-2 bg-green-500 rounded-full absolute top-0 left-0"></i>
+                        <i class="size-3 animate-ping bg-green-500 rounded-full absolute -top-0.5 -left-0.5"></i>
+                      </span>
+                  </span>
+                  <div
+                          class="transition-all z-10 flex flex-col gap-2 justify-end h-full p-4">
+                      <p class="text-xl flex gap-2 items-center">
+                        {info.activeGame.game.name}
+                          <span class="text-sm font-light">{info.activeGame.detail.publishers[0]}</span>
+                      </p>
+                      <p>{Duration.fromMillis(info.activeGame.game.playtime_2weeks * 60 * 1000).as('hours').toFixed(2).replace(/0+$/, '').replace(/\.$/, '')}
+                          hours in the last 2 weeks</p>
+                  </div>
+              </div>
+          </div>
+    : null}
+    <div id="recently"
+         class="flex flex-col gap-4 transition-all max-h-[50px] hover:max-h-[1200px] opacity-75 hover:opacity-100 overflow-hidden">
+
+      {(info.isInGame ? info.recentGames.slice(1) : info.recentGames).map(game => {
+          const hoursLastTwoWeeks = Duration.fromMillis(game.game.playtime_2weeks * 60 * 1000).as('hours').toFixed(2).replace(/0+$/, '').replace(/\.$/, '');
+          return (
+                  <div class="relative transition-all w-[344px] h-[160px] group">
+                      <Image
+                              width={460}
+                              height={215}
+                              alt={game.game.name}
+                              src={game.detail.header_image}
+                              loading="eager"
+                              class="absolute top-0 left-0 -z-10 brightness-100 group-hover:brightness-50 transition-all rounded-md "
+                      ></Image>
+                      <div
+                              class="transition-all opacity-0 group-hover:opacity-100 z-10 flex flex-col gap-2 justify-end h-full p-4">
+                          <p class="text-xl flex gap-2 items-center">
+                            {game.game.name}
+                              <span class="text-sm font-light">{game.detail.publishers[0]}</span>
+                          </p>
+                          <p>{hoursLastTwoWeeks} hours in the last 2 weeks</p>
+                      </div>
+                  </div>
+          )
+        }
+      )}
+    </div>
+</Section>

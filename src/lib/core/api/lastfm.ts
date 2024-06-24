@@ -1,4 +1,3 @@
-import {cached} from "../cache.ts";
 
 export type LastFMBooleanNumber = 0 | 1;
 export type Track = {

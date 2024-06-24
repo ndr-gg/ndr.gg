@@ -12,7 +12,7 @@ const {url, label} = Astro.props;
 
 const purl = new URL(url);
 
-const foreignSiteSlug = purl.host.startsWith('www.') ? purl.host.split("www.")[1] : purl;
+const foreignSiteSlug = purl.host.startsWith('www.') ? purl.host.split("www.")[1] : purl.host;
 
 const defaultSeconds = 5;
 ---
